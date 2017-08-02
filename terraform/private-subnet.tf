@@ -2,7 +2,7 @@
 resource "aws_subnet" "private" {
   vpc_id            = "${aws_vpc.default.id}"
   cidr_block        = "${var.private_subnet_cidr}"
-  availability_zone = "us-west-1a"
+  availability_zone = "us-west-1c"
   map_public_ip_on_launch = false
   depends_on = ["aws_instance.nat"]
   tags { 
@@ -15,7 +15,7 @@ resource "aws_route_table" "private" {
   vpc_id = "${aws_vpc.default.id}"
   route {
     cidr_block = "0.0.0.0/0"
-    instance_id = "${aws_instance.nat.id}"
+    instance_id = "${aws_instance.nat_gw.id}"
   }
 }
 
