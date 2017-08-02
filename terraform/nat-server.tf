@@ -3,7 +3,7 @@ resource "aws_instance" "nat" {
   ami = "${lookup(var.amis, var.region)}"
   instance_type = "t2.micro"
   subnet_id = "${aws_subnet.public.id}"
-  security_groups = ["${aws_security_group.default.id}", "${aws_security_group.nat.id}"]
+  vpc_security_group_ids = ["${aws_security_group.default.id}", "${aws_security_group.nat.id}"]
   key_name = "${aws_key_pair.deployer.key_name}"
   source_dest_check = false
   tags = { 
@@ -11,14 +11,15 @@ resource "aws_instance" "nat" {
   }
   connection {
     user = "ubuntu"
-    key_file = "ssh/insecure-deployer"
+    private_key = "${file("ssh/insecure-deployer")}"
   }
   provisioner "remote-exec" {
     inline = [
       "sudo iptables -t nat -A POSTROUTING -j MASQUERADE",
-      "echo 1 > /proc/sys/net/ipv4/conf/all/forwarding",
+      "sudo sysctl -w net.ipv4.ip_forward=1",
       /* Install docker */ 
-      "curl -sSL https://get.docker.com/ubuntu/ | sudo sh",
+      "curl -fsSL get.docker.com -o get-docker.sh",
+      "sudo sh ./get-docker.sh",
       /* Initialize open vpn data container */
       "sudo mkdir -p /etc/openvpn",
       "sudo docker run --name ovpn-data -v /etc/openvpn busybox",
