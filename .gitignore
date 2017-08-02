@@ -3,3 +3,4 @@
 *.tfstate*
 *.ovpn
 secrets
+terraform/ssh/insecure-deployer
