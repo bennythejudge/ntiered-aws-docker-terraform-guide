@@ -1,5 +1,7 @@
 ## AirPair Social Authoring
 
+[![GuardRails badge](https://badges.production.guardrails.io/bennythejudge/ntiered-aws-docker-terraform-guide.svg)](https://www.guardrails.io)
+
 ### Thank you
 
 Thanks for contributing content to [AirPair's community posts section](https://www.airpair.com/posts). This post authored by Greg Osuri can be edited at:
